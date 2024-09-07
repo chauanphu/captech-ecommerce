@@ -1,30 +1,32 @@
 // components/Navbar.js
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { FaBars, FaTimes } from "react-icons/fa";
+import { Category, getCategories } from "@/utils/api";
+import Link from "next/link";
 
 export default function Navbar() {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [categories, setCategories] = useState<Category[]>([]);
 
-  // Categories Array
-  const categories = [
-    {
-      name: "LED Street Lights",
-      icon: "/icons/led-icon.png",
-    },
-    {
-      name: "Smart Lighting",
-      icon: "/icons/smart-light-icon.png",
-    },
-    {
-      name: "Solar-Powered Lights",
-      icon: "/icons/solar-icon.png",
-    },
-  ];
+  // Fetch categories from the API
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const data = await getCategories();
+        setCategories(data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
 
+    fetchCategories();
+  }, []);
+
+  // Get categories from the API https://localhost:1337/api/categories
   return (
     <nav aria-label="Main Navigation" className="w-full px-4 lg:px-8">
       {/* First Line - Utility Bar (Hidden on Mobile) */}
@@ -67,7 +69,7 @@ export default function Navbar() {
             className="flex-shrink-0 hidden lg:block" // Hide on Mobile
           >
             <Image
-              src="/api/image/logo.png" // Path to your logo image in the public folder
+              src="http://localhost:1337/uploads/logo_b4cf2f84ee.png" // Path to your logo image in the public folder
               alt="StreetLight Co. Logo"
               width={100} // Set your desired width
               height={100} // Set your desired height
@@ -124,18 +126,19 @@ export default function Navbar() {
       {/* Third Line - Product Categories (Hidden in Mobile) */}
       <div className="bg-white py-2 hidden lg:block lg:px-8">
         <div className="container mx-auto flex space-x-8 justify-center">
-          {categories.map((category, index) => (
+          { (categories && categories.length > 0) &&
+          categories.map((category, index) => (
             <div className="relative group" key={index}>
               <a
-                href="#"
+                href={`/categories/${category.sku}`}
                 className="text-primaryBlue flex items-center"
                 aria-haspopup="true"
               >
                 <Image
-                  src={category.icon}
+                  src={"http://localhost:1337" + category.image.url}
                   alt={`${category.name} Icon`}
-                  width={24}
-                  height={24}
+                  width={36}
+                  height={36}
                   className="mr-2"
                 />
                 <span>{category.name}</span>
@@ -167,19 +170,16 @@ export default function Navbar() {
           >
             <div className="flex flex-col space-y-2">
               {/* Logo in Sidebar */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.5 }}
+              <div
                 className="text-primaryBlue font-bold text-2xl"
               >
                 <Image
-                  src="/api/image/logo.png" // Use the same logo for mobile sidebar
+                  src="http://localhost:1337/uploads/logo_b4cf2f84ee.png" // Use the same logo for mobile sidebar
                   alt="StreetLight Co. Logo"
                   width={90}
                   height={30}
                 />
-              </motion.div>
+              </div>
 
               {/* Utility Bar (Collapsed) */}
               <div className="border-t border-lightGray pt-4 mt-4">
@@ -209,18 +209,20 @@ export default function Navbar() {
               >
                 Contact
               </a>
-
+              <a href={"#"} className="hover:text-brightBlue text-primaryBlue font-semibold" aria-label="Common Questions">
+                  Sản phẩm
+              </a>
               {/* Categories without Subcategories */}
               {categories.map((category, index) => (
-                <div key={index} className="flex items-center space-x-2">
+                <Link key={index} href={category.sku} className="flex items-center my-4 space-x-2">
                   <Image
-                    src={category.icon}
+                    src={"http://localhost:1337" + category.image.url}
                     alt={`${category.name} Icon`}
-                    width={24}
-                    height={24}
+                    width={32}
+                    height={32}
                   />
                   <span className="text-primaryBlue">{category.name}</span>
-                </div>
+                </Link>
               ))}
             </div>
           </motion.div>
