@@ -4,7 +4,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { FaBars, FaTimes } from "react-icons/fa"; // Removed FaChevronDown since no subcategories are needed
+import { FaBars, FaTimes } from "react-icons/fa";
 
 export default function Navbar() {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -26,9 +26,7 @@ export default function Navbar() {
   ];
 
   return (
-    <nav aria-label="Main Navigation" className="w-full">
-      {" "}
-      {/* Added horizontal padding */}
+    <nav aria-label="Main Navigation" className="w-full px-4 lg:px-8">
       {/* First Line - Utility Bar (Hidden on Mobile) */}
       <div className="bg-lightGray text-darkGray text-sm py-2 hidden lg:block lg:px-8">
         <div className="container mx-auto flex justify-between items-center">
@@ -57,28 +55,41 @@ export default function Navbar() {
           </div>
         </div>
       </div>
+
       {/* Second Line - Main Navbar */}
-      <div className="bg-white py-4 border-b border-lightGray px-4 lg:px-8">
+      <div className="bg-white py-4 border-b border-lightGray lg:px-8">
         <div className="container mx-auto flex justify-between items-center">
-          {/* Logo - Hidden on Mobile */}
+          {/* Logo Image - Replace Text with Image */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
-            className="text-primaryBlue font-bold text-2xl hidden lg:block"
+            className="flex-shrink-0 hidden lg:block" // Hide on Mobile
           >
-            StreetLight Co.
+            <Image
+              src="/api/image/logo.png" // Path to your logo image in the public folder
+              alt="StreetLight Co. Logo"
+              width={100} // Set your desired width
+              height={100} // Set your desired height
+            />
           </motion.div>
 
-          {/* Search Bar - Expanded to 80% on Mobile */}
+          {/* Search Bar */}
           <div className="w-full lg:w-1/2 relative">
             <input
               type="text"
-              placeholder="Tìm kiếm sản phẩm..."
+              placeholder="Tìm kiêm sản phẩm..."
               aria-label="Search Products"
               className="w-4/5 lg:w-full border border-lightGray rounded-full py-2 px-4 focus:outline-none"
-              // 80% width on mobile (w-4/5) and full width on large screens (lg:w-full)
             />
+            <motion.span
+              initial={{ x: -20, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.4 }}
+              className="absolute top-2 right-4 text-gray-400"
+            >
+              
+            </motion.span>
           </div>
 
           {/* Burger Icon for Mobile */}
@@ -109,6 +120,7 @@ export default function Navbar() {
           </div>
         </div>
       </div>
+
       {/* Third Line - Product Categories (Hidden in Mobile) */}
       <div className="bg-white py-2 hidden lg:block lg:px-8">
         <div className="container mx-auto flex space-x-8 justify-center">
@@ -132,6 +144,8 @@ export default function Navbar() {
           ))}
         </div>
       </div>
+
+      {/* Sidebar for Mobile Menu */}
       {/* Overlay and Sidebar for Mobile Menu */}
       {isMobileMenuOpen && (
         <>
@@ -159,7 +173,12 @@ export default function Navbar() {
                 transition={{ duration: 0.5 }}
                 className="text-primaryBlue font-bold text-2xl"
               >
-                StreetLight Co.
+                <Image
+                  src="/api/image/logo.png" // Use the same logo for mobile sidebar
+                  alt="StreetLight Co. Logo"
+                  width={90}
+                  height={30}
+                />
               </motion.div>
 
               {/* Utility Bar (Collapsed) */}
