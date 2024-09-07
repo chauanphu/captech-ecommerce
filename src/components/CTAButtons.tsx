@@ -1,10 +1,9 @@
 // components/CTAButtons.js
 "use client";
 
-import { FaPhone, FaCommentDots, FaEnvelope, FaTimes } from "react-icons/fa"; // Import icons
-import { BsFillChatDotsFill } from "react-icons/bs"; // Another message icon for variation
+import { FaPhone } from "react-icons/fa"; // Import icons
 import { Contact, getContacts } from "@/utils/api";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 
 export default function CTAButtons() {
@@ -25,9 +24,10 @@ export default function CTAButtons() {
                   {contact.icon ? (
                     <Image
                       src={contact.icon.url}
-                      alt={contact.icon.name}
+                      alt={"Contact"}
                       width={32}
                       height={32}
+                      className="w-auto"
                     />
                   ) : (
                     <FaPhone size={24} />
@@ -47,7 +47,7 @@ export default function CTAButtons() {
                 {contact.icon ? (
                   <Image
                     src={contact.icon.url}
-                    alt={contact.icon.name}
+                    alt={"Contact"}
                     width={24}
                     height={24}
                   />

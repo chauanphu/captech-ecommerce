@@ -36,12 +36,16 @@ export default function Footer() {
         {/* First Column: Logo, Description, Contact Details */}
         <div>
           {/* Logo */}
-          <Image
-            src={company?.logo.url || ""}
-            alt="Company Logo"
-            width={150}
-            height={50}
-          />
+          {company?.logo && (
+            <Image
+              src={company.logo.url}
+              alt="Company Logo"
+              width={100}
+              height={50}
+              className="w-auto"
+            />
+          )}
+
 
           {/* Company Description */}
           <p className="mt-4 text-sm">
