@@ -1,0 +1,26 @@
+{
+  "collectionName": "components_navigation_pages",
+  "info": {
+    "displayName": "Page",
+    "icon": "apps",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true,
+      "unique": false
+    },
+    "sku": {
+      "type": "string",
+      "required": true,
+      "unique": false
+    },
+    "mainPage": {
+      "type": "boolean",
+      "default": true,
+      "required": false
+    }
+  }
+}

@@ -3,10 +3,7 @@ import Navbar from '@/components/Navbar'; // Import the Navbar component
 
 export default function Home() {
   return (
-    <div>
-      {/* Navbar */}
-      <Navbar />
-
+    <main>
       {/* Hero Section */}
       <section className="bg-primaryBlue text-white py-16 text-center">
         <h1 className="text-4xl font-bold">Welcome to StreetLight Co.</h1>
@@ -71,6 +68,6 @@ export default function Home() {
           Contact Us
         </button>
       </section>
-    </div>
+    </main>
   );
 }
