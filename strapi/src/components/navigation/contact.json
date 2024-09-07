@@ -1,0 +1,29 @@
+{
+  "collectionName": "components_navigation_contacts",
+  "info": {
+    "displayName": "Contact",
+    "icon": "phone",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "value": {
+      "type": "string"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "sku": {
+      "type": "string"
+    }
+  }
+}

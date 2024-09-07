@@ -31,7 +31,7 @@ export default function Navbar() {
 
   // Get categories from the API https://localhost:1337/api/categories
   return (
-    <nav aria-label="Main Navigation" className="w-full sticky">
+    <nav aria-label="Main Navigation" className="w-full sticky z-99">
       {/* First Line - Utility Bar (Hidden on Mobile) */}
       <div className="bg-lightGray text-darkGray text-sm py-2 hidden lg:block lg:px-8">
         <div className="container mx-auto flex justify-between items-center">

@@ -1,12 +1,20 @@
 // components/Footer.js
 "use client";
-import { Category, Company, getCategories, getCompany } from "@/utils/api";
+import {
+  Category,
+  Company,
+  Contact,
+  getCategories,
+  getCompany,
+  getContacts,
+} from "@/utils/api";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
 export default function Footer() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [company, setCompany] = useState<Company | null>(null);
+  const [contacts, setContacts] = useState<Contact[]>([]);
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -14,6 +22,7 @@ export default function Footer() {
         setCategories(data);
         const companyData = await getCompany();
         setCompany(companyData);
+        getContacts(true, false).then((data) => setContacts(data));
       } catch (error) {
         console.error("Error fetching categories:", error);
       }
@@ -27,7 +36,12 @@ export default function Footer() {
         {/* First Column: Logo, Description, Contact Details */}
         <div>
           {/* Logo */}
-          <Image src={company?.logo.url || ""} alt="Company Logo" width={150} height={50} />
+          <Image
+            src={company?.logo.url || ""}
+            alt="Company Logo"
+            width={150}
+            height={50}
+          />
 
           {/* Company Description */}
           <p className="mt-4 text-sm">
@@ -97,7 +111,16 @@ export default function Footer() {
         <div>
           <h3 className="font-bold text-lg mb-4">Liên hệ</h3>
           <ul className="space-y-2">
-            <li>
+            {contacts.length > 0 &&
+              contacts.filter(contact => contact.type=="phone").map((contact, index) => (
+                <li key={index}>
+                  <div className="font-bold">{contact.label}</div>
+                  <a href={`tel:${contact.value}`} className="hover:text-brightBlue">
+                    {contact.value}
+                  </a>
+                </li>
+              ))}
+            {/* <li>
               <span className="font-bold">Sales Department: </span>
               <a href="tel:+123456789" className="hover:text-brightBlue">
                 +123 456 789
@@ -114,7 +137,7 @@ export default function Footer() {
               <a href="tel:+123456787" className="hover:text-brightBlue">
                 +123 456 787
               </a>
-            </li>
+            </li> */}
           </ul>
         </div>
       </div>
@@ -122,15 +145,6 @@ export default function Footer() {
       {/* Copyright and Legal Links */}
       <div className="mt-12 text-center text-sm border-t border-gray-600 pt-6">
         <p>© 2024 StreetLight Co. All rights reserved.</p>
-        <p className="mt-2">
-          <a href="#" className="hover:text-brightBlue">
-            Privacy Policy
-          </a>{" "}
-          |
-          <a href="#" className="hover:text-brightBlue ml-2">
-            Terms & Conditions
-          </a>
-        </p>
       </div>
     </footer>
   );
