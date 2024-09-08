@@ -1,4 +1,3 @@
-// components/CTAButtons.js
 "use client";
 
 import { FaPhone } from "react-icons/fa"; // Import icons
@@ -8,9 +7,12 @@ import Image from "next/image";
 
 export default function CTAButtons() {
   const [contacts, setContacts] = useState<Contact[]>([]);
+  const [hoveredButton, setHoveredButton] = useState<number | null>(null); // State to track hovered button
+
   useEffect(() => {
     getContacts().then((data) => setContacts(data));
   }, []);
+
   return (
     <div>
       {/* Vertical CTA buttons bar on the right for desktop */}
@@ -19,7 +21,13 @@ export default function CTAButtons() {
         <div className="bg-darkGray bg-opacity-70 backdrop-blur-lg border border-white border-opacity-20 p-4 rounded-l-3xl h-auto flex flex-col justify-center space-y-4 shadow-lg">
           {contacts.length > 0 &&
             contacts.map((contact, index) => (
-              <div key={index} className="p-2 rounded-full">
+              <div
+                key={index}
+                className="relative p-2 rounded-full"
+                onMouseEnter={() => setHoveredButton(index)} // Show tooltip on hover
+                onMouseLeave={() => setHoveredButton(null)} // Hide tooltip when not hovering
+              >
+                {/* Icon or Image */}
                 <a href={contact.url} className="text-white">
                   {contact.icon ? (
                     <Image
@@ -33,6 +41,18 @@ export default function CTAButtons() {
                     <FaPhone size={24} />
                   )}
                 </a>
+
+                {/* Tooltip / Contact Value with Slide-Out Animation */}
+                <div
+                  className={`absolute left-[-150px] top-1/2 transform -translate-y-1/2 bg-white text-darkGray p-2 rounded-lg shadow-lg w-36 text-center z-40 transition-all duration-300 ease-in-out
+                  ${
+                    hoveredButton === index
+                      ? "opacity-100 translate-x-0" // Slide out when hovered
+                      : "opacity-0 translate-x-5" // Hidden when not hovered
+                  }`}
+                >
+                  {contact.value}
+                </div>
               </div>
             ))}
         </div>
@@ -58,18 +78,6 @@ export default function CTAButtons() {
               </a>
             </div>
           ))}
-        {/* <a href="tel:+123456789" className="bg-primaryBlue text-white p-3 rounded-full hover:bg-brightBlue transition">
-          <FaPhone size={24} />
-        </a>
-        <a href="#" className="bg-primaryBlue text-white p-3 rounded-full hover:bg-brightBlue transition">
-          <BsFillChatDotsFill size={24} />
-        </a>
-        <a href="mailto:info@streetlightco.com" className="bg-primaryBlue text-white p-3 rounded-full hover:bg-brightBlue transition">
-          <FaEnvelope size={24} />
-        </a>
-        <a href="https://zalo.me" className="bg-primaryBlue text-white p-3 rounded-full hover:bg-brightBlue transition">
-          <img src="/icons/zalo-icon.png" alt="Zalo" width={24} height={24} />
-        </a> */}
       </div>
     </div>
   );
