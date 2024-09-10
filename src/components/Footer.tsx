@@ -7,6 +7,8 @@ import {
   getCategories,
   getCompany,
   getContacts,
+  getPolicies,
+  Policy,
 } from "@/utils/api";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -15,6 +17,8 @@ export default function Footer() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [company, setCompany] = useState<Company | null>(null);
   const [contacts, setContacts] = useState<Contact[]>([]);
+  const [policies, setPolicies] = useState<Policy[]>([]);
+
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -23,6 +27,7 @@ export default function Footer() {
         const companyData = await getCompany();
         setCompany(companyData);
         getContacts(true, false).then((data) => setContacts(data));
+        getPolicies().then((data) => setPolicies(data));
       } catch (error) {
         console.error("Error fetching categories:", error);
       }
@@ -48,12 +53,12 @@ export default function Footer() {
 
 
           {/* Company Description */}
-          <p className="mt-4 text-sm">
+          <p className="mt-4 text-lg">
             {company?.description || "Company Description"}
           </p>
 
           {/* Address */}
-          <p className="mt-4">{company?.address}</p>
+          <p className="mt-4">🏢 {company?.address}</p>
 
           {/* Email */}
           <p className="mt-2">
@@ -88,26 +93,18 @@ export default function Footer() {
         <div>
           <h3 className="font-bold text-lg mb-4">Hỗ trợ khách hàng</h3>
           <ul className="space-y-2">
-            <li>
-              <a href="#" className="hover:text-brightBlue">
-                FAQ
-              </a>
-            </li>
-            <li>
-              <a href="#" className="hover:text-brightBlue">
-                Privacy Policy
-              </a>
-            </li>
-            <li>
-              <a href="#" className="hover:text-brightBlue">
-                Return Policy
-              </a>
-            </li>
-            <li>
-              <a href="#" className="hover:text-brightBlue">
-                Terms & Conditions
-              </a>
-            </li>
+            {policies.length > 0 && (
+              policies.map((policy, i) => (
+                <li key={i}>
+                  <a
+                    href={policy.url}
+                    className="hover:text-brightBlue"
+                  >
+                    {policy.name}
+                  </a>
+                </li>
+              ))
+            )}
           </ul>
         </div>
 
@@ -119,29 +116,11 @@ export default function Footer() {
               contacts.filter(contact => contact.type=="phone").map((contact, index) => (
                 <li key={index}>
                   <div className="font-bold">{contact.label}</div>
-                  <a href={`tel:${contact.value}`} className="hover:text-brightBlue">
+                  <a href={contact.url} className="hover:text-brightBlue">
                     {contact.value}
                   </a>
                 </li>
               ))}
-            {/* <li>
-              <span className="font-bold">Sales Department: </span>
-              <a href="tel:+123456789" className="hover:text-brightBlue">
-                +123 456 789
-              </a>
-            </li>
-            <li>
-              <span className="font-bold">Support Department: </span>
-              <a href="tel:+123456788" className="hover:text-brightBlue">
-                +123 456 788
-              </a>
-            </li>
-            <li>
-              <span className="font-bold">General Inquiries: </span>
-              <a href="tel:+123456787" className="hover:text-brightBlue">
-                +123 456 787
-              </a>
-            </li> */}
           </ul>
         </div>
       </div>

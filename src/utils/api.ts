@@ -116,3 +116,20 @@ export async function getContacts(onCTA: boolean = true, image: boolean = true):
   });
   return contacts;
 }
+
+export type Policy = {
+  name: string;
+  url: string;
+}
+
+export async function getPolicies(): Promise<Policy[]> {
+  const { data } = await api.get<Response<Policy>>("/policies");
+  let policies = data.data.map((policy: any) => policy.attributes);
+  policies = policies.map((policy: any) => {
+    return {
+      name: policy.name,
+      url: policy.url,
+    };
+  });
+  return policies;
+}
